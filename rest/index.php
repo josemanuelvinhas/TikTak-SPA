@@ -31,6 +31,3 @@ try{
 	header("Content-Type: application/json");
 	die(json_encode(array("error" => $ex->getMessage())));
 }
-// debug
-//print_r($_SERVER);
-//print_r($_GET);

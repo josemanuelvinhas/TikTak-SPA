@@ -34,28 +34,27 @@ class URIDispatcher {
 	*/
 	private $mappings = array();
 
-	/**
-	* Adds a mapping for an HTTP request to a function callback.
-	*
-	* The $url_pattern will be compared with the path of the requested uri.
-	* This pattern can also contain special $<number> tokens, it will be useful
-	* to capture path elements and pass them as parameters to the callback.
-	*
-	* For example, the request to:
-	* /user/alice/posts/1 matched against: /user/$2/posts/$1 will invoke a call
-	* to callback_function(1, "alice").
-	*
-	* In addition, request bodies of Content-Type: application/json will be parsed
-	* and passed as the last parameter to the callback. You can disable this with
-	* the $parse_json_input parameter.
-	*
-	* @param string $http_method The required HTTP method
-	* @param string $url_pattern The pattern to match the current request against
-	* @param array $matched_parameters The $<number> matched values
-	* @param callback $callback The $<number> matched values
-	* @param boolean $parse_json_input whether a request body of type json should be parsed
-	* @return boolean true if hte current request matches. False otherwise
-	*/
+    /**
+     * Adds a mapping for an HTTP request to a function callback.
+     *
+     * The $url_pattern will be compared with the path of the requested uri.
+     * This pattern can also contain special $<number> tokens, it will be useful
+     * to capture path elements and pass them as parameters to the callback.
+     *
+     * For example, the request to:
+     * /user/alice/posts/1 matched against: /user/$2/posts/$1 will invoke a call
+     * to callback_function(1, "alice").
+     *
+     * In addition, request bodies of Content-Type: application/json will be parsed
+     * and passed as the last parameter to the callback. You can disable this with
+     * the $parse_json_input parameter.
+     *
+     * @param string $http_method The required HTTP method
+     * @param string $url_pattern The pattern to match the current request against
+     * @param callback $callback The $<number> matched values
+     * @param boolean $parse_json_input whether a request body of type json should be parsed
+     * @return URIDispatcher true if hte current request matches. False otherwise
+     */
 	public function map($http_method, $url_pattern, $callback,
 	$parse_json_input = true) {
 
