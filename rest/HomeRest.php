@@ -17,15 +17,21 @@ class HomeRest extends BaseRest
     }
 
 
-    public function getPrivateHome($username, $data)
+    public function getPrivateHome($username, $page)
     {
 
+
+        header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
+        header('Content-Type: application/json');
+        echo(json_encode(array("metodo"=>"private")));
 
     }
 
-    public function getPublicHome()
+    public function getPublicHome($page)
     {
-
+        header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
+        header('Content-Type: application/json');
+        echo(json_encode(array("metodo"=>"public")));
     }
 
 
@@ -33,5 +39,5 @@ class HomeRest extends BaseRest
 
 $homeRest = new HomeRest();
 URIDispatcher::getInstance()
-    ->map("GET", "/home/$1", array($homeRest, "getPrivateHome")) //Home pública
-    ->map("GET", "/home/", array($homeRest, "getPublicHome")); //Home privada
+    ->map("GET", "/home/$/$2", array($homeRest, "getPrivateHome")) //Home pública
+    ->map("GET", "/home/$1", array($homeRest, "getPublicHome")); //Home privada
