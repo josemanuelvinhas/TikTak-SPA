@@ -14,13 +14,16 @@ require_once(__DIR__ . "/../model/LikeMapper.php");
 require_once(__DIR__ . "/../model/Follower.php");
 require_once(__DIR__ . "/../model/FollowerMapper.php");
 
+require_once(__DIR__ . "/../model/HashtagMapper.php");
+
 
 class VideoRest extends BaseRest
 {
     private $videoMapper;
     private $likeMapper;
     private $userMapper;
-    private $followMapper;
+    private $followerMapper;
+    private $hashtagMapper;
 
     public function __construct()
     {
@@ -29,26 +32,28 @@ class VideoRest extends BaseRest
         $this->videoMapper = new VideoMapper();
         $this->userMapper = new UserMapper();
         $this->likeMapper = new LikeMapper();
-        $this->followMapper = new FollowerMapper();
+        $this->followerMapper = new FollowerMapper();
+        $this->hashtagMapper = new HashtagMapper();
     }
 
     public function getVideo($id)
     {
-        $video = $this->videoMapper->findById("$id");
+        $video = $this->videoMapper->findById($id);
+
         if ($video === null) {
             http_response_code(400);
             header('Content-Type: application/json');
             echo(json_encode(array("error" => "The video doesn't exists")));
         } else {
             $array = array();
-            if (($currentLogged = parent::isAuthenticateUser()) !== null) {
-
-                $likes = $this->likeMapper->isLike($currentLogged->getUsername(), "$id");
-                $following = $this->followMapper->isFollowing($currentLogged->getUsername(), $video->getAuthor());
+            $currentLogged = parent::isAuthenticateUser();
+            if ($currentLogged != null) {
+                $likes = $this->likeMapper->isLike($currentLogged->getUsername(), $id);
+                $following = $this->followerMapper->isFollowing($currentLogged->getUsername(), $video->getAuthor());
                 $array["like"] = $likes;
                 $array["following"] = $following;
             }
-            $array["video"] = $video;
+            $array["video"] = $video->toArray();
             header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
             header('Content-Type: application/json');
             echo(json_encode($array));
@@ -67,20 +72,109 @@ class VideoRest extends BaseRest
             if (($currentLogged = parent::authenticateUser()) !== null && ($video->getAuthor() === $currentLogged->getUsername())) {
                 $this->videoMapper->delete($video);
                 header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
-            }else{
+            } else {
                 http_response_code(401);
                 header('Content-Type: application/json');
                 echo(json_encode(array("error" => "Unauthorized")));
             }
-
         }
     }
-    public function getVideosByHashtag($hashtag)
+
+    public function getVideosByHashtag($hashtag, $nPage)
     {
+        if (Hashtag::isValidContentHashtag($hashtag)) {
+
+            $nVideos = $this->videoMapper->countVideosByHashtag("#" . $hashtag);
+            if ($nVideos == 0) {
+                $nPags = 1;
+            } else {
+                $nPags = ceil($nVideos / 6);
+            }
+
+            if (preg_match('/^[0-9]+$/', $nPage) && ($temp = (int)$nPage) < $nPags) {
+                $page = $temp;
+                $toret = array();
+
+                $toret["videos"] = $this->videoMapper->findAllByHashtag("#" . $hashtag, $page);
+
+                $currentLogged = parent::isAuthenticateUser();
+                if ($currentLogged != null) {
+                    $toret["likes"] = $this->likeMapper->findByUsername($currentLogged->getUsername());
+                    $toret["followings"] = $this->followerMapper->findFollowingByUsername($currentLogged->getUsername());
+                }
+
+                if ($nPags > 1) {
+                    if ($page == 0) {
+                        $toret["next"] = true;
+                        $toret["previous"] = false;
+                    } elseif ($page == ($nPags - 1)) {
+                        $toret["next"] = false;
+                        $toret["previous"] = true;
+                    } else {
+                        $toret["next"] = true;
+                        $toret["previous"] = true;
+                    }
+                }
+
+                $toret["topUsers"] = $this->userMapper->findTop5ByFollowers();
+                $toret["trends"] = $this->hashtagMapper->findTop5Hashtag();
+
+                header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
+                header('Content-Type: application/json');
+                echo(json_encode($toret));
+
+            } else {
+                http_response_code(400);
+                header('Content-Type: application/json');
+                echo(json_encode(array("error" => "Page not valid")));
+            }
+
+
+        } else {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo(json_encode(array("error" => "The hashtag isn't valid")));
+        }
 
     }
-    public function uploadVideo($id)
+
+    public function uploadVideo()
     {
+        $currentLogged = parent::authenticateUser();
+        $video = new Video();
+
+        try {
+            $uploadVideo = $this->videoMapper->uploadVideo();
+
+            $video->setVideodescription("");
+            $video->setVideoname($uploadVideo["fileName"]);
+            $video->setAuthor($currentLogged->getUsername());
+
+            $video->checkIsValidForUpload();
+        } catch (ValidationException $ex) {
+            if (isset($video) && $video->getVideoname() != "") {
+                unlink(__DIR__ . "/../upload_videos/" . $video->getVideoname());
+            }
+            $errors = $ex->getErrors();
+        }
+
+        if (empty($errors)) {
+            $id = $this->videoMapper->save($video);
+
+            preg_match_all(Hashtag::$regexpHashtag . "u", $video->getVideodescription(), $matches);
+
+            $hashtags = array_unique($matches[0]);
+            foreach ($hashtags as $hs) {
+                $hashtag = new Hashtag((int)$id, $hs);
+                $this->hashtagMapper->save($hashtag);
+            }
+            header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
+
+        } else {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo(json_encode($errors));
+        }
 
     }
 
@@ -132,7 +226,7 @@ class VideoRest extends BaseRest
 $videoRest = new VideoRest();
 URIDispatcher::getInstance()
     ->map("GET", "/video/$1", array($videoRest, "getVideo")) //getVideo
-    ->map("GET", "/video/hashtag/$1", array($videoRest, "getVideosByHashtag")) //Obtener videos hashtag
+    ->map("GET", "/video/hashtag/$1/$2", array($videoRest, "getVideosByHashtag")) //Obtener videos hashtag
     ->map("POST", "/video", array($videoRest, "uploadVideo"))//Subir un video
     ->map("DELETE", "/video/$1", array($videoRest, "deleteVideo")) //deleteVideo
     ->map("DELETE", "/video/like/$1", array($videoRest, "dislike")) //Dislike

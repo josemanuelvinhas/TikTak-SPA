@@ -18,8 +18,11 @@ class LikeMapper
     {
         $stmt = $this->db->prepare("SELECT id FROM likes WHERE username=?");
         $stmt->execute(array($username));
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
-
+        $toret = array();
+        foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $value) {
+            array_push($toret, $value);
+        }
+        return $toret;
     }
 
     public function isLike($username, $id)
