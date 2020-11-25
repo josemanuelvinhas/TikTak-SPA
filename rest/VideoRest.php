@@ -19,6 +19,8 @@ class VideoRest extends BaseRest
 {
     private $videoMapper;
     private $likeMapper;
+    private $userMapper;
+    private $followMapper;
 
     public function __construct()
     {
@@ -55,14 +57,6 @@ class VideoRest extends BaseRest
 
     public function deleteVideo($id)
     {
-
-    }
-    public function getVideosByHashtag($hashtag)
-    {
-
-    }
-    public function uploadVideo($id)
-    {
         $video = $this->videoMapper->findById("$id");
         if ($video === null) {
             http_response_code(400);
@@ -81,9 +75,14 @@ class VideoRest extends BaseRest
 
         }
     }
+    public function getVideosByHashtag($hashtag)
+    {
 
+    }
+    public function uploadVideo($id)
+    {
 
-
+    }
 
     public function like($id)
     {
@@ -133,8 +132,8 @@ class VideoRest extends BaseRest
 $videoRest = new VideoRest();
 URIDispatcher::getInstance()
     ->map("GET", "/video/$1", array($videoRest, "getVideo")) //getVideo
-    ->map("GET", "/video/hashtag/$1", array($videoRest, "getVideosByHashtag")) //getVideosByHashtag
-    ->map("POST", "/video", array($videoRest, "uploadVideo"))//uploadVideo
+    ->map("GET", "/video/hashtag/$1", array($videoRest, "getVideosByHashtag")) //Obtener videos hashtag
+    ->map("POST", "/video", array($videoRest, "uploadVideo"))//Subir un video
     ->map("DELETE", "/video/$1", array($videoRest, "deleteVideo")) //deleteVideo
     ->map("DELETE", "/video/like/$1", array($videoRest, "dislike")) //Dislike
     ->map("POST", "/video/like/$1", array($videoRest, "like")); //Like
