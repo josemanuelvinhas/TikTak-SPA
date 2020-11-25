@@ -83,6 +83,17 @@ class Video
         $this->nlikes = $nlikes;
     }
 
+    public function toArray(){
+        return array(
+            "id" => $this->getId(),
+            "videoname" => $this->getVideoname(),
+            "videodescription" => $this->getVideodescription(),
+            "videodate" => $this->getVideodate(),
+            "author" => $this->getAuthor(),
+            "nlikes" => $this->getNlikes()
+        );
+    }
+
     public function checkIsValidForUpload()
     {
         $errors = array();
