@@ -22,14 +22,16 @@ class FollowerRest extends BaseRest
 
         $follower = new Follower($currentLogged->getUsername(), $username);
 
+        //TODO error de el $username no existe
+
         if ($this->followerMapper->isFollowing($follower->getUsernameFollower(), $follower->getUsernameFollowing())) {
             http_response_code(400);
             header('Content-Type: application/json');
-            echo(json_encode(array("follower" => "Already follow this user")));
+            echo(json_encode(array("Error" => "Already follow this user")));
         } elseif ($follower->getUsernameFollower() == $follower->getUsernameFollowing()) {
             http_response_code(400);
             header('Content-Type: application/json');
-            echo(json_encode(array("follower" => "A user cannot follow himself")));
+            echo(json_encode(array("Error" => "A user cannot follow himself")));
         } else {
             $this->followerMapper->save($follower);
             header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
@@ -38,9 +40,21 @@ class FollowerRest extends BaseRest
 
     }
 
-    public function unfollow()
+    public function unfollow($username)
     {
-        //TODO
+        $currentLogged = parent::authenticateUser();
+
+        $follower = new Follower($currentLogged->getUsername(), $username);
+
+        if ($this->followerMapper->isFollowing($follower->getUsernameFollower(), $follower->getUsernameFollowing())) {
+            $this->followerMapper->delete($follower);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
+        } else {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo(json_encode(array("Error" => "You can't unfollow someone you don't follow")));
+        }
+
     }
 
 }

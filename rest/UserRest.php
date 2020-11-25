@@ -4,16 +4,23 @@ require_once(__DIR__ . "/BaseRest.php");
 
 require_once(__DIR__ . "/../model/User.php");
 require_once(__DIR__ . "/../model/UserMapper.php");
+require_once(__DIR__ . "/../model/VideoMapper.php");
+require_once(__DIR__ . "/../model/FollowerMapper.php");
+
 
 class UserRest extends BaseRest
 {
     private $userMapper;
+    private $videoMapper;
+    private $followerMapper;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->userMapper = new UserMapper();
+        $this->videoMapper = new VideoMapper();
+        $this->followerMapper = new FollowerMapper();
     }
 
     public function register($data)
@@ -50,12 +57,12 @@ class UserRest extends BaseRest
                     $errorsExists["email"] = "Email already exists";
                 }
 
-                if (empty($errorsExists)){
+                if (empty($errorsExists)) {
                     $this->userMapper->save($user);
 
                     header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
                     header("Location: " . $_SERVER['REQUEST_URI'] . "/" . $data->username);
-                }else{
+                } else {
                     http_response_code(400);
                     header('Content-Type: application/json');
                     echo(json_encode($errorsExists));
@@ -80,9 +87,32 @@ class UserRest extends BaseRest
         }
     }
 
-    public function profile()
+    public function profile($username)
     {
-        //TODO peticion profile
+
+        $usuario = $this->userMapper->findByUsername($username);
+
+        if ($usuario != null) {
+            $usuario = $usuario->toArray();
+            $videos = $this->videoMapper->findAllByAuthor($username);
+
+            header($_SERVER['SERVER_PROTOCOL'] . ' 200 Ok');
+            header('Content-Type: application/json');
+
+            $currentLogged = parent::isAuthenticateUser();
+            if ($currentLogged != false && $currentLogged->getUsername() != $username) {
+                $following = $this->followerMapper->isFollowing($currentLogged->getUsername(), $username);
+                echo(json_encode(array("user" => $usuario, "videos" => $videos, "following" => $following)));
+
+            } else {
+                echo(json_encode(array("user" => $usuario, "videos" => $videos)));
+            }
+
+        } else {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo(json_encode(array("error" => "Username does not exist")));
+        }
     }
 
 }
