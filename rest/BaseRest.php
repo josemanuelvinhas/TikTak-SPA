@@ -46,4 +46,17 @@ class BaseRest {
 			}
 		}
 	}
+    public function isAuthenticateUser()
+    {
+        if (!isset($_SERVER['PHP_AUTH_USER'])) {
+            return false;
+        } else {
+            $userMapper = new UserMapper();
+            if ($userMapper->isValidUser($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+                return new User($_SERVER['PHP_AUTH_USER']);
+            } else {
+                return false;
+            }
+        }
+    }
 }
