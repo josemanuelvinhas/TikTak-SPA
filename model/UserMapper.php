@@ -28,7 +28,7 @@ class UserMapper
         if ($users != null) {
             return new User(
                 $users["username"],
-                $users["passwd"],
+                null,
                 $users["email"],
                 $users["nfollowers"],
                 $users["nfollowing"]);

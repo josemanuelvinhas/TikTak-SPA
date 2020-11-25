@@ -24,7 +24,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -65,7 +66,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -81,7 +83,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -111,7 +114,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
