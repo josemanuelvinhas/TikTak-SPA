@@ -71,6 +71,14 @@ class User
         $this->nfollowers = $nfollowers;
     }
 
+    public function toArray(){
+        return array(
+            "username" => $this->getUsername(),
+            "nFollowers" => $this->getNfollowers(),
+            "nFollowing" => $this->getNfollowings()
+        );
+    }
+
     public function checkIsValidForRegister()
     {
         $errors = array();

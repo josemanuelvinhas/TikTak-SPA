@@ -24,7 +24,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -65,7 +66,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -81,7 +83,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -111,7 +114,8 @@ class VideoMapper
         $videos = array();
 
         foreach ($videos_db as $vi) {
-            array_push($videos, new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]));
+            $video = new Video($vi["id"], $vi["videoname"], $vi["videodescription"], $vi["videodate"], $vi["author"], $vi["nlikes"]);
+            array_push($videos, $video->toArray());
         }
 
         return $videos;
@@ -132,7 +136,7 @@ class VideoMapper
         unlink(__DIR__ ."/../upload_videos/".$video->getVideoname());
     }
 
-    public function uploadVideo()
+    public function uploadVideo($user)
     {
         $toret = array();
         $errors = array();
@@ -150,7 +154,7 @@ class VideoMapper
             }
 
             if(empty($errors_video)){
-                $newFileName = time() . '_' . $_SESSION["currentuser"] . '.' . $fileExtension;
+                $newFileName = time() . '_' . $user . '.' . $fileExtension;
                 $dest_path = __DIR__ . "/../upload_videos/" . $newFileName;
 
                 $toret["fileName"] = $newFileName;
