@@ -144,9 +144,9 @@ class VideoRest extends BaseRest
         $video = new Video();
 
         try {
-            $uploadVideo = $this->videoMapper->uploadVideo();
+            $uploadVideo = $this->videoMapper->uploadVideo($currentLogged->getUsername());
 
-            $video->setVideodescription("");
+            $video->setVideodescription($_POST["description"]);
             $video->setVideoname($uploadVideo["fileName"]);
             $video->setAuthor($currentLogged->getUsername());
 
@@ -169,7 +169,8 @@ class VideoRest extends BaseRest
                 $this->hashtagMapper->save($hashtag);
             }
             header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
-
+            header('Content-Type: application/json');
+            echo(json_encode(array("id_video" => $id)));
         } else {
             http_response_code(400);
             header('Content-Type: application/json');

@@ -136,7 +136,7 @@ class VideoMapper
         unlink(__DIR__ ."/../upload_videos/".$video->getVideoname());
     }
 
-    public function uploadVideo()
+    public function uploadVideo($user)
     {
         $toret = array();
         $errors = array();
@@ -154,7 +154,7 @@ class VideoMapper
             }
 
             if(empty($errors_video)){
-                $newFileName = time() . '_' . $_SESSION["currentuser"] . '.' . $fileExtension;
+                $newFileName = time() . '_' . $user . '.' . $fileExtension;
                 $dest_path = __DIR__ . "/../upload_videos/" . $newFileName;
 
                 $toret["fileName"] = $newFileName;
