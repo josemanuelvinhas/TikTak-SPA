@@ -1,0 +1,36 @@
+.logo_header {
+    width: 2.5em;
+    height: 2.5em;
+}
+
+.nombre_header {
+    height: 2.5em;
+}
+
+.lupa {
+    height: 2em;
+}
+
+.medalla {
+    height: 2.5em;
+}
+
+.video-card {
+    max-width: 20rem;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.video-card-perfil {
+    max-width: 8rem;
+    width: 100%;
+}
+
+.video-card-view {
+    max-width: 20rem;
+    width: 100%;
+}
+
+.description {
+    max-width: fit-content;
+}
