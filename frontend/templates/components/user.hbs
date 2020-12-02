@@ -1,42 +1,27 @@
-<header class="row align-items-center justify-content-around border-bottom border-ligth pt-2 pb-2">
-    <div class="col-12 col-sm-6 col row align-items-center justify-content-center justify-content-sm-start">
-        <a href="index.php?controller=home&action=index">
-            <img class="logo_header" src="static/img/logo.png" alt="{{i18n 'Logo' }}">
-        </a>
-
-        <a href="index.php?controller=home&action=index">
-            <img class="nombre_header" src="static/img/nombre.png" alt="TikTak">
-        </a>
+{{#if isLogged}}
+    <button class="btn bt-secondary m-1" data-toggle="modal"
+            data-target="#modalLogin">{{i18n 'Log in' }}</button>
+    <button class="btn bt-outline-secondary m-1" data-toggle="modal"
+            data-target="#modalRegister">{{i18n 'Sing in' }}</button>
+{{else}}
+    <div class="m-0 mr-3 font-weight-bold"><a class="text-dark"
+                                              href="">@{{currentUser}}</a>
     </div>
-
-    <div class="col-12 col-sm-6 row justify-content-center align-items-center justify-content-sm-end">
-        <?php if (!isset($currentuser)) { ?>
-        <button class="btn bt-secondary m-1" data-toggle="modal"
-                data-target="#modalLogin"><?= i18n("Log in") ?></button>
-        <button class="btn bt-outline-secondary m-1" data-toggle="modal"
-                data-target="#modalRegister"><?= i18n("Sing in") ?></button>
-        <?php } else { ?>
-        <div class="m-0 mr-3 font-weight-bold"><a class="text-dark"
-                                                  href="index.php?controller=user&action=view&username=<?= $_SESSION["currentuser"] ?>"><?= "@" . $_SESSION["currentuser"] ?></a>
-        </div>
-        <div class="btn-group dropleft">
-            <img class="bt-menu m-2" src="static/img/menu.svg" data-toggle="dropdown" alt="<?= i18n("Open Menu") ?>">
-                <ul class="dropdown-menu" role="menu">
-                    <li><a class="dropdown-item"
-                           href="index.php?controller=home&action=index"><?= i18n("Index") ?></a></li>
-                    <li><a class="dropdown-item"
-                           href="index.php?controller=user&action=home"><?= i18n("Home") ?></a></li>
-                    <li><a class="dropdown-item"
-                           href="index.php?controller=user&action=view&username=<?= $_SESSION["currentuser"] ?>"><?= i18n("Profile") ?></a>
-                    </li>
-                    <li><a class="dropdown-item" data-toggle="modal"
-                           data-target="#modalUpload" href=""><?= i18n("Upload Video") ?></a></li>
-                    <li class="dropdown-divider"></li>
-                    <li><a class="dropdown-item"
-                           href="index.php?controller=user&amp;action=logout"><?= i18n("Log out") ?></a></li>
-                </ul>
-        </div>
-        <?php } ?>
+    <div class="btn-group dropleft">
+        <img class="bt-menu m-2" src="img/menu.svg" data-toggle="dropdown" alt="{{i18n 'Open menu' }}">
+        <ul class="dropdown-menu" role="menu">
+            <li><a class="dropdown-item"
+                   href="">{{i18n 'Index' }}</a></li>
+            <li><a class="dropdown-item"
+                   href="">{{i18n 'Home' }}</a></li>
+            <li><a class="dropdown-item"
+                   href="">{{i18n 'Profile' }}</a>
+            </li>
+            <li><a class="dropdown-item" data-toggle="modal"
+                   data-target="#modalUpload" href="">{{i18n 'Upload video' }}</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item"
+                   href="">{{i18n 'Log out' }}</a></li>
+        </ul>
     </div>
-
-</header>
+{{/if}}
