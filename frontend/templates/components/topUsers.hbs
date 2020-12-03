@@ -1,0 +1,23 @@
+<div class="col-12 list-group mt-4">
+    <h5 class="m-0 list-group-item bg-gris text-center">{{i18n 'Top-5 Users' }}</h5>
+
+    {{#each topUsers}}
+        <a class="list-group-item list-group-item-action">
+            <div class="row justify-content-between align-items-center ml-1 mr-1">
+                @{{this}}
+                {{#if_eq @index 0}}
+                    <img class="medalla" src="img/1Trophy.png" alt="{{i18n 'Gold Medal' }}">
+                {{/if_eq}}
+                {{#if_eq @index 1}}
+                    <img class="medalla" src="img/2Trophy_2.png" alt="{{i18n 'Silver Medal' }}">
+                {{/if_eq}}
+                {{#if_eq @index 2}}
+                    <img class="medalla" src="img/3Trophy_2.png" alt="{{i18n 'Bronze Medal' }}">
+                {{/if_eq}}
+
+
+            </div>
+        </a>
+    {{/each}}
+
+</div>

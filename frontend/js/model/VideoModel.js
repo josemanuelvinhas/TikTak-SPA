@@ -1,4 +1,4 @@
-class VideoModel extends Fronty.model {
+class VideoModel extends Fronty.Model {
 
     constructor(id, videoName, videoDescription, videoDate, author, nLikes) {
         super('Video Model');

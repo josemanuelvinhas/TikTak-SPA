@@ -1,27 +1,27 @@
-{{#if isLogged}}
-    <button class="btn bt-secondary m-1" data-toggle="modal"
-            data-target="#modalLogin">{{i18n 'Log in' }}</button>
-    <button class="btn bt-outline-secondary m-1" data-toggle="modal"
-            data-target="#modalRegister">{{i18n 'Sing in' }}</button>
-{{else}}
-    <div class="m-0 mr-3 font-weight-bold"><a class="text-dark"
-                                              href="">@{{currentUser}}</a>
-    </div>
-    <div class="btn-group dropleft">
-        <img class="bt-menu m-2" src="img/menu.svg" data-toggle="dropdown" alt="{{i18n 'Open menu' }}">
-        <ul class="dropdown-menu" role="menu">
-            <li><a class="dropdown-item"
-                   href="">{{i18n 'Index' }}</a></li>
-            <li><a class="dropdown-item"
-                   href="">{{i18n 'Home' }}</a></li>
-            <li><a class="dropdown-item"
-                   href="">{{i18n 'Profile' }}</a>
-            </li>
-            <li><a class="dropdown-item" data-toggle="modal"
-                   data-target="#modalUpload" href="">{{i18n 'Upload video' }}</a></li>
-            <li class="dropdown-divider"></li>
-            <li><a class="dropdown-item"
-                   href="">{{i18n 'Log out' }}</a></li>
-        </ul>
-    </div>
-{{/if}}
+<div class="col-12 col-sm-6 row justify-content-center align-items-center justify-content-sm-end">
+    {{#if isLogged}}
+        <div class="m-0 mr-3 font-weight-bold"><a class="text-dark"
+                                                  href="">@{{currentUser}}</a>
+        </div>
+        <div class="btn-group dropleft">
+            <img class="bt-menu m-2" src="img/menu.svg" data-toggle="dropdown" alt="{{i18n 'Open menu' }}">
+            <ul class="dropdown-menu" role="menu">
+                <li><a class="dropdown-item"
+                >{{i18n 'Index' }}</a></li>
+                <li><a class="dropdown-item"
+                >{{i18n 'Home' }}</a></li>
+                <li><a class="dropdown-item"
+                >{{i18n 'Profile' }}</a>
+                </li>
+                <li><a class="dropdown-item" data-toggle="modal"
+                       data-target="#modalUpload">{{i18n 'Upload video' }}</a></li>
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item"
+                       id="logoutbutton">{{i18n 'Log out' }}</a></li>
+            </ul>
+        </div>
+    {{else}}
+        <button class="btn bt-secondary m-1" id="buttonlogin">{{i18n 'Log in' }}</button>
+        <button class="btn bt-outline-secondary m-1" id="buttonregister">{{i18n 'Sing in' }}</button>
+    {{/if}}
+</div>

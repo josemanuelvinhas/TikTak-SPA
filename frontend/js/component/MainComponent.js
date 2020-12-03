@@ -5,10 +5,13 @@ class MainComponent extends Fronty.RouterComponent {
         // models instantiation
         // we can instantiate models at any place
         this.userModel = new UserModel();
+        this.homeModel = new HomeModel();
+
+        this.userService = new UserService();
 
         super.setRouterConfig({
             home: {
-                component: new HomeComponent(this.postsModel, this.userModel, this),
+                component: new HomePublicComponent(this.homeModel, this.userModel, this),
                 title: 'Posts'
             },
             defaultRoute: 'home'
@@ -19,6 +22,8 @@ class MainComponent extends Fronty.RouterComponent {
         });
 
         this.addChildComponent(this._createUserBarComponent());
+        this.addChildComponent(this._createModalLoginUserComponent());
+        this.addChildComponent(this._createModalregisterUserComponent());
         this.addChildComponent(this._createLanguageComponent());
 
     }
@@ -39,12 +44,74 @@ class MainComponent extends Fronty.RouterComponent {
     _createUserBarComponent() {
         var userbar = new Fronty.ModelComponent(Handlebars.templates.user, this.userModel, 'userbar');
 
+        userbar.addEventListener('click', '#buttonlogin', () => {
+            $('#modallogin').modal('show');
+        });
+
+        userbar.addEventListener('click', '#buttonregister', () => {
+            $('#modalregister').modal('show');
+        });
+
         userbar.addEventListener('click', '#logoutbutton', () => {
             this.userModel.logout();
             this.userService.logout();
         });
 
         return userbar;
+    }
+
+    _createModalLoginUserComponent() {
+        var modal_login = new Fronty.ModelComponent(Handlebars.templates.modal_login, this.userModel, 'modallogin');
+
+        modal_login.addEventListener('click', '#loginbutton', (event) =>{
+            this.userService.login($('#formLoginInAlias').val(),$('#formLoginInPassword').val())
+                .then(()=> {
+                    $('#modallogin').modal('hide');
+                    this.goToPage('home');
+                    this.userModel.setLoggeduser($('#formLoginInAlias').val());
+                })
+                .catch((error) => {
+                    this.userModel.set((model) => {
+                        model.loginError = error.responseText;
+                    });
+                    this.userModel.logout();
+                });
+        });
+
+
+        return modal_login;
+    }
+
+    _createModalregisterUserComponent() {
+        var modal_register = new Fronty.ModelComponent(Handlebars.templates.modal_register, this.userModel, 'modalregister');
+
+        this.addEventListener('click', '#registerbutton', () => {
+            this.userService.register({
+                username: $('#formRegisterInAlias').val(),
+                password: $('#formRegisterInPassword').val(),
+                email: $('#formRegisterInEmail').val()
+            })
+                .then(() => {
+                    $('#modalregister').modal('hide');
+                    $('#modallogin').modal('show');
+
+                    this.userModel.set((model) => {
+                        model.registerErrors = {};
+                        model.registerMode = false;
+                    });
+                })
+                .fail((xhr, errorThrown, statusText) => {
+                    if (xhr.status == 400) {
+                        this.userModel.set(() => {
+                            this.userModel.registerErrors = xhr.responseJSON;
+                        });
+                    } else {
+                        alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
+                    }
+                });
+        });
+
+        return modal_register;
     }
 
     _createLanguageComponent() {
@@ -61,7 +128,7 @@ class MainComponent extends Fronty.RouterComponent {
         });
 
         languageComponent.addEventListener('click', '#galicianlink', () => {
-            I18n.changeLanguage('es');
+            I18n.changeLanguage('gl');
             document.location.reload();
         });
 

@@ -1,4 +1,4 @@
-class HomeModel extends Fronty.model {
+class HomeModel extends Fronty.Model {
     constructor() {
         super('HomeModel');
 
@@ -7,6 +7,7 @@ class HomeModel extends Fronty.model {
         this.previous = '';
         this.topUsers = [];
         this.trends = [];
+
     }
 
     setVideos(videos) {
@@ -22,15 +23,35 @@ class HomeModel extends Fronty.model {
         }
     }
 
-    setNext(next){
-        this.next = next;
+    setVideos(videos) {
+        this.set((self) => {
+            self.videos = videos;
+        });
     }
 
-    setPrevious(previous){
-        this.previous = previous;
+    setNext(next) {
+        this.set((self) => {
+            self.next = next;
+        });
     }
 
-    setTopUsers(){
-
+    setPrevious(previous) {
+        this.set((self) => {
+            self.previous = previous;
+        });
     }
+
+    setTopUsers(topUsers) {
+        this.set((self) => {
+            self.topUsers = topUsers;
+        });
+    }
+
+    setTrends(trends) {
+        this.set((self) => {
+            self.trends = trends;
+        });
+    }
+
+
 }
