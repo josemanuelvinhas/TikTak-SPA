@@ -33,6 +33,8 @@ Promise.all([
         Handlebars.templates.modal_login = Handlebars.compile(source)),
     loadTextFile('templates/components/modal_register.hbs').then((source) =>
         Handlebars.templates.modal_register = Handlebars.compile(source)),
+    loadTextFile('templates/components/modal_upload.hbs').then((source) =>
+        Handlebars.templates.modal_upload = Handlebars.compile(source)),
     loadTextFile('templates/components/home_public.hbs').then((source) =>
         Handlebars.templates.home_public = Handlebars.compile(source)),
     loadTextFile('templates/components/video.hbs').then((source) =>

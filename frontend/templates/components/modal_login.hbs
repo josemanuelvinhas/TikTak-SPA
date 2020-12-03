@@ -1,39 +1,43 @@
-{{#unless isLogged}}
-<div class="modal fade" id="modallogin" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{i18n 'Log in' }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div>
-
-                {{loginError}}
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="formLoginInUsername">{{i18n 'Username' }}</label>
-                        <input type="text" class="form-control" name="username" id="formLoginInAlias"
-                               placeholder="{{i18n 'Username' }}"
-                               value="">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="formLoginInPassword">{{i18n 'Password' }}</label>
-                        <input type="password" class="form-control" name="passwd" id="formLoginInPassword"
-                               placeholder="{{i18n 'Password' }}"
-                        value="">
-                    </div>
+{{#if isLogged}}
+    <div></div>
+{{else}}
+    <div class="modal fade" id="modallogin" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{i18n 'Log in' }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
 
-                <div class="modal-footer justify-content-end">
-                    <input type="submit" id="loginbutton" class="btn bt-secondary" value="{{i18n 'Log in' }}">
+                <div>
+                    <div class="modal-body">
+
+                        <p class="form-text text-danger">
+                            {{#i18n}}{{loginError}}{{/i18n}}
+                        </p>
+
+                        <div class="form-group">
+                            <label for="formLoginInUsername">{{i18n 'Username' }}</label>
+                            <input type="text" class="form-control" name="username" id="formLoginInAlias"
+                                   placeholder="{{i18n 'Username' }}"
+                                   value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formLoginInPassword">{{i18n 'Password' }}</label>
+                            <input type="password" class="form-control" name="passwd" id="formLoginInPassword"
+                                   placeholder="{{i18n 'Password' }}"
+                                   value="">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-end">
+                        <input type="submit" id="loginbutton" class="btn bt-secondary" value="{{i18n 'Log in' }}">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{{/unless}}
+{{/if}}

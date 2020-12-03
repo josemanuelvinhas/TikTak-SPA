@@ -23,7 +23,8 @@ class MainComponent extends Fronty.RouterComponent {
 
         this.addChildComponent(this._createUserBarComponent());
         this.addChildComponent(this._createModalLoginUserComponent());
-        this.addChildComponent(this._createModalregisterUserComponent());
+        this.addChildComponent(this._createModalRegisterUserComponent());
+        this.addChildComponent(this._createModalUploadComponent());
         this.addChildComponent(this._createLanguageComponent());
 
     }
@@ -52,7 +53,11 @@ class MainComponent extends Fronty.RouterComponent {
             $('#modalregister').modal('show');
         });
 
-        userbar.addEventListener('click', '#logoutbutton', () => {
+        userbar.addEventListener('click', '#buttonupload', () => {
+            $('#modalupload').modal('show');
+        });
+
+        userbar.addEventListener('click', '#buttonlogout', () => {
             this.userModel.logout();
             this.userService.logout();
         });
@@ -66,9 +71,9 @@ class MainComponent extends Fronty.RouterComponent {
         modal_login.addEventListener('click', '#loginbutton', (event) =>{
             this.userService.login($('#formLoginInAlias').val(),$('#formLoginInPassword').val())
                 .then(()=> {
-                    $('#modallogin').modal('hide');
                     this.goToPage('home');
                     this.userModel.setLoggeduser($('#formLoginInAlias').val());
+                    $('#modallogin').modal('hide');
                 })
                 .catch((error) => {
                     this.userModel.set((model) => {
@@ -82,7 +87,7 @@ class MainComponent extends Fronty.RouterComponent {
         return modal_login;
     }
 
-    _createModalregisterUserComponent() {
+    _createModalRegisterUserComponent() {
         var modal_register = new Fronty.ModelComponent(Handlebars.templates.modal_register, this.userModel, 'modalregister');
 
         this.addEventListener('click', '#registerbutton', () => {
@@ -112,6 +117,13 @@ class MainComponent extends Fronty.RouterComponent {
         });
 
         return modal_register;
+    }
+
+    _createModalUploadComponent(){
+        var modal_upload = new Fronty.ModelComponent(Handlebars.templates.modal_upload, this.userModel, 'modalupload');
+
+
+        return modal_upload;
     }
 
     _createLanguageComponent() {

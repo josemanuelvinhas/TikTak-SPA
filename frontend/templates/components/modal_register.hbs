@@ -1,46 +1,63 @@
-{{#unless isLogged}}
-<div class="modal fade" id="modalregister" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{i18n 'Sing in' }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+{{#if isLogged}}
+    <div></div>
+{{else}}
+    <div class="modal fade" id="modalregister" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{i18n 'Sing in' }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-            <div>
-                <div class="modal-body">
+                <div>
+                    <div class="modal-body">
 
-                    <div class="form-group">
-                        <label for="formRegisterInAlias">{{i18n 'Username' }}</label>
-                        <input type="text" class="form-control" name="username" id="formRegisterInAlias"
-                               placeholder="{{i18n 'Username' }}"
-                        value="">
+
+                        <div class="form-group">
+                            <label for="formRegisterInAlias">{{i18n 'Username' }}</label>
+                            <input type="text" class="form-control" name="username" id="formRegisterInAlias"
+                                   placeholder="{{i18n 'Username' }}"
+                                   value="">
+                            {{#each registerErrors.username}}
+                                <small class="form-text text-danger">
+                                    {{#i18n}}{{this}}{{/i18n}}
+                                </small>
+                            {{/each}}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formRegisterInEmail">{{i18n 'Email' }}</label>
+                            <input type="text" class="form-control" name="email" id="formRegisterInEmail"
+                                   placeholder="example@example.com"
+                                   value="">
+                            {{#each registerErrors.email}}
+                                <small class="form-text text-danger">
+                                    {{#i18n}}{{this}}{{/i18n}}
+                                </small>
+                            {{/each}}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formRegisterInPassword">{{i18n 'Password' }}</label>
+                            <input type="password" class="form-control" name="passwd" id="formRegisterInPassword"
+                                   placeholder="{{i18n 'Password' }}"
+                                   value="">
+                            {{#each registerErrors.passwd}}
+                                <small class="form-text text-danger">
+                                    {{#i18n}}{{this}}{{/i18n}}
+                                </small>
+                            {{/each}}
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="formRegisterInEmail">{{i18n 'Email' }}</label>
-                        <input type="text" class="form-control" name="email" id="formRegisterInEmail"
-                               placeholder="example@example.com"
-                               value="">
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="formRegisterInPassword">{{i18n 'Password' }}</label>
-                        <input type="password" class="form-control" name="passwd" id="formRegisterInPassword"
-                               placeholder="{{i18n 'Password' }}"
-                        value="">
+                    <div class="modal-footer justify-content-end">
+                        <input type="submit" id="registerbutton" class="btn bt-secondary" value="{{i18n 'Sing in' }}">
                     </div>
                 </div>
 
-                <div class="modal-footer justify-content-end">
-                    <input type="submit" id="registerbutton" class="btn bt-secondary" value="{{i18n 'Sing in' }}">
-                </div>
             </div>
-
         </div>
     </div>
-</div>
-{{/unless}}
+{{/if}}
