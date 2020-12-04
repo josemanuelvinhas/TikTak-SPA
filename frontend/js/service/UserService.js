@@ -68,4 +68,8 @@ class UserService {
             contentType: 'application/json'
         });
     }
+
+    getProfile(username){
+        return $.get(AppConfig.backendServer+'/rest/user/profile/'+ username);
+    }
 }

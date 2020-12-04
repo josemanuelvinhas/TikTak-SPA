@@ -35,12 +35,26 @@ Promise.all([
         Handlebars.templates.modal_register = Handlebars.compile(source)),
     loadTextFile('templates/components/modal_upload.hbs').then((source) =>
         Handlebars.templates.modal_upload = Handlebars.compile(source)),
-    loadTextFile('templates/components/home_public.hbs').then((source) =>
-        Handlebars.templates.home_public = Handlebars.compile(source)),
+    loadTextFile('templates/components/index.hbs').then((source) =>
+        Handlebars.templates.index = Handlebars.compile(source)),
+    loadTextFile('templates/components/index_row.hbs').then((source) =>
+        Handlebars.templates.index_row = Handlebars.compile(source)),
+    loadTextFile('templates/components/home_private.hbs').then((source) =>
+        Handlebars.templates.home_private = Handlebars.compile(source)),
+    loadTextFile('templates/components/home_private_row.hbs').then((source) =>
+        Handlebars.templates.home_private_row = Handlebars.compile(source)),
     loadTextFile('templates/components/video.hbs').then((source) =>
         Handlebars.templates.video = Handlebars.compile(source)),
     loadTextFile('templates/components/topUsers.hbs').then((source) =>
-        Handlebars.templates.topUsers = Handlebars.compile(source))
+        Handlebars.templates.topUsers = Handlebars.compile(source)),
+    loadTextFile('templates/components/trends.hbs').then((source) =>
+        Handlebars.templates.trends = Handlebars.compile(source)),
+    loadTextFile('templates/components/profile.hbs').then((source) =>
+        Handlebars.templates.profile = Handlebars.compile(source)),
+    loadTextFile('templates/components/search.hbs').then((source) =>
+        Handlebars.templates.search = Handlebars.compile(source)),
+    loadTextFile('templates/components/search_row.hbs').then((source) =>
+        Handlebars.templates.search_row = Handlebars.compile(source))
 
 ])
     .then(() => {

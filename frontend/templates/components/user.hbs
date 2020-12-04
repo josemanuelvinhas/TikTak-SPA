@@ -1,16 +1,16 @@
 <div class="col-12 col-sm-6 row justify-content-center align-items-center justify-content-sm-end">
     {{#if isLogged}}
         <div class="m-0 mr-3 font-weight-bold"><a class="text-dark"
-                                                  href="">@{{currentUser}}</a>
+                                                  href="#profile?username={{currentUser}}">@{{currentUser}}</a>
         </div>
         <div class="btn-group dropleft">
             <img class="bt-menu m-2" src="img/menu.svg" data-toggle="dropdown" alt="{{i18n 'Open menu' }}">
             <ul class="dropdown-menu" role="menu">
-                <li><a class="dropdown-item"
+                <li><a class="dropdown-item" href="#index"
                 >{{i18n 'Index' }}</a></li>
-                <li><a class="dropdown-item"
+                <li><a class="dropdown-item" href="#home"
                 >{{i18n 'Home' }}</a></li>
-                <li><a class="dropdown-item"
+                <li><a class="dropdown-item" href="#profile?username={{currentUser}}"
                 >{{i18n 'Profile' }}</a>
                 </li>
                 <li><a class="dropdown-item" id="buttonupload">{{i18n 'Upload video' }}</a></li>

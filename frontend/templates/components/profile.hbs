@@ -1,0 +1,66 @@
+<div class="col-12 row justify-content-center m-0 mt-5 mb-3 p-0">
+    <div class="col-xl-6 col-lg-8 col-10 m-0 p-0 list-group">
+
+        <div class="row row-cols-2 justify-content-between align-items-center p-0 pb-2 pt-2 list-group-item bg-gris">
+            <h5 class="col text-center m-0 p-0 font-weight-bold">@{{profile.user.username}}</h5>
+            {{#if isLogged}}
+                {{#if_eq currentUser profile.user.username}}
+
+                    <div class="col text-center">
+                        <a class="action-upload">
+                            <img class="bt-subir m-2" src="img/subir.svg"
+                                 alt="{{i18n 'Upload Video' }}">
+                        </a>
+                    </div>
+
+                {{else}}
+                    {{#if profile.following}}
+                        <div class="col text-center">
+                            <div>
+                                <input class="btn bt-outline-primary m-1 action-unfollow" item="{{profile.user.username}}" type="submit" value="{{i18n 'Unfollow' }}">
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="col text-center">
+                            <div>
+                                <input class="btn bt-primary m-1 action-follow" item="{{profile.user.username}}" type="submit" value="{{i18n 'Follow' }}">
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/if_eq}}
+            {{else}}
+                <div class="col text-center">
+                    <button class="btn bt-primary m-1 action-login">{{i18n 'Follow' }}</button>
+                </div>
+            {{/if}}
+        </div>
+
+        <div class="row row-cols-3 justify-content-between p-0 pt-3 pb-3 list-group-item">
+            <div class="col row row-cols-1 justify-content-center p-0">
+                <div class="col text-center">{{profile.nVideos}}</div>
+                <div class="col text-center">{{i18n 'videos' }}</div>
+            </div>
+            <div class="col row row-cols-1 justify-content-center p-0">
+                <div class="col text-center">{{profile.user.nFollowers}}</div>
+                <div class="col text-center">{{i18n 'followers' }}</div>
+            </div>
+            <div class="col row row-cols-1 justify-content-center p-0">
+                <div class="col text-center">{{profile.user.nFollowing}}</div>
+                <div class="col text-center">{{i18n 'following' }}</div>
+            </div>
+        </div>
+
+        <div class="row row-cols-sm-3 row-cols-1 p-0 pt-3 pb-3 list-group-item">
+
+            {{#each profile.videos}}
+                <div class="col row justify-content-sm-center justify-content-center m-0">
+                    <a href="#video?id={{this.id}}">
+                        <video class="video-card-perfil m-1" src="../upload_videos/{{this.videoname}}"
+                               muted loop></video>
+                    </a>
+                </div>
+            {{/each}}
+        </div>
+
+    </div>
+</div>

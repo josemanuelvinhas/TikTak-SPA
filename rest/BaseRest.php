@@ -45,7 +45,7 @@ class BaseRest
                 header($_SERVER['SERVER_PROTOCOL'] . ' 401 Unauthorized');
                 header('WWW-Authenticate: Basic realm="Rest API of TikTak-SPA"');
 
-                die('The username/password is not valid');
+                die('Invalid credentials');
             }
         }
     }

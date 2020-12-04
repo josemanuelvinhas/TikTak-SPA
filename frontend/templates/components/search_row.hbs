@@ -1,0 +1,77 @@
+<div key="{{id}}" class="col card">
+    <div>
+        <div class="card-header row justify-content-around align-items-center">
+            <div class="font-weight-bold"><a class="text-dark" href="#profile?username={{author}}">@{{author}}</a>
+            </div>
+            {{#if user.isLogged}}
+                {{#if_eq user.currentUser author}}
+                    <a><img class="bt-fav m-2 invisible" src="img/borrar.svg"
+                            alt="{{i18n 'Delete' }}"></a>
+                {{else}}
+                    {{#isInArray home.followings author}}
+                        <div>
+                            <input class="btn bt-outline-primary m-1 action-unfollow" item="{{author}}" type="submit"
+                                   value="{{i18n 'Unfollow' }}">
+                        </div>
+                    {{else}}
+                        <div>
+                            <input class="btn bt-primary m-1 action-follow" type="submit" item="{{author}}" value="{{i18n 'Follow' }}">
+                        </div>
+                    {{/isInArray}}
+
+                {{/if_eq}}
+
+            {{else}}
+                <button class="btn bt-primary m-1" id="followLogin">{{i18n 'Follow' }}</button>
+            {{/if}}
+        </div>
+
+        <div class="card-body row justify-content-center p-2">
+            <a href="#video?id={{id}}">
+            <video class="video-card" src="../upload_videos/{{videoname}}" autoplay muted
+                   loop
+            ></video>
+            </a>
+        </div>
+
+        <div class="card-footer pt-0 ">
+            <div class="row align-items-center justify-content-around">
+                <div class="row align-items-center">
+
+                    {{#if user.isLogged}}
+                        {{#isInArray home.likes id}}
+                            <div>
+                                <input class="bt-fav m-2 action-dislike" item="{{id}}" type="image" src="img/estrella_llena.svg"
+                                       alt="{{i18n 'Dislike' }}">
+                            </div>
+                            {{nlikes}}
+                        {{else}}
+                            <div>
+                                <input class="bt-fav m-2 action-like" item="{{id}}" type="image" src="img/estrella_vacia.svg"
+                                       alt="{{i18n 'Like' }}">
+                            </div>
+                            {{nlikes}}
+                        {{/isInArray}}
+
+                    {{else}}
+
+                        <a id="favLogin"><img class="bt-fav m-2"
+                                              src="img/estrella_vacia.svg"
+                                              alt="{{i18n 'Like' }}"></a>{{nlikes}}
+                    {{/if}}
+                </div>
+
+                <a onclick="copyToClipboard('')" data-toggle="popover" data-placement="top" data-trigger="hover"
+                   data-content="{{i18n 'Click to copy to clipboard' }}"><img class="bt-fav m-2"
+                                                                              src="img/compartir.svg"
+                                                                              alt="{{i18n 'Share' }}"></a>
+            </div>
+            <div class="row justify-content-center">
+                <p class="m-0 p-0">{{videodescription}}</p>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

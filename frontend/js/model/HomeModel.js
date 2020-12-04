@@ -3,29 +3,36 @@ class HomeModel extends Fronty.Model {
         super('HomeModel');
 
         this.videos = [];
-        this.next = '';
-        this.previous = '';
+        this.next = false;
+        this.previous = false;
         this.topUsers = [];
         this.trends = [];
+        this.likes = [];
+        this.followings = [];
+        this.page = 0;
+        this.hashtag = '';
 
-    }
-
-    setVideos(videos) {
-        for (var video in videos) {
-            this.videos.push(new VideoModel(
-                video['id'],
-                video['videoname'],
-                video['videodescription'],
-                video['videodate'],
-                video['author'],
-                video['nlikes']
-            ));
-        }
     }
 
     setVideos(videos) {
         this.set((self) => {
-            self.videos = videos;
+            for (var i = 0; i < videos.length; i++) {
+                self.videos.push(new VideoModel(
+                    videos[i]['id'],
+                    videos[i]['videoname'],
+                    videos[i]['videodescription'],
+                    videos[i]['videodate'],
+                    videos[i]['author'],
+                    videos[i]['nlikes']
+                ));
+            }
+        });
+
+    }
+
+    setPage(page) {
+        this.set((self) => {
+            self.page = page;
         });
     }
 
@@ -50,6 +57,24 @@ class HomeModel extends Fronty.Model {
     setTrends(trends) {
         this.set((self) => {
             self.trends = trends;
+        });
+    }
+
+    setLikes(likes) {
+        this.set((self) => {
+            self.likes = likes;
+        });
+    }
+
+    setFollowings(followings) {
+        this.set((self) => {
+            self.followings = followings;
+        });
+    }
+
+    setHashtag(hashtag) {
+        this.set((self) => {
+            self.hashtag = hashtag;
         });
     }
 

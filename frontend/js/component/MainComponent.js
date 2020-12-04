@@ -2,25 +2,45 @@ class MainComponent extends Fronty.RouterComponent {
     constructor() {
         super('frontyapp', Handlebars.templates.main, 'maincontent');
 
-        // models instantiation
-        // we can instantiate models at any place
+        //Models
         this.userModel = new UserModel();
         this.homeModel = new HomeModel();
+        this.videoModel = new VideoModel();
 
+        //Service
         this.userService = new UserService();
+        this.videosService = new VideosService();
 
+        //Router
         super.setRouterConfig({
-            home: {
-                component: new HomePublicComponent(this.homeModel, this.userModel, this),
-                title: 'Posts'
+            index: {
+                component: new IndexComponent(this.homeModel, this.userModel, this),
+                title: 'Index'
             },
-            defaultRoute: 'home'
+            home: {
+                component: new HomePrivateComponent(this.userModel, this.homeModel, this),
+                title: 'Home'
+            },
+            video: {
+                component: new VideoComponent(this.userModel, this),
+                title: 'Video'
+            },
+            profile: {
+                component: new ProfileComponent(this.userModel, this),
+                title: 'Profile'
+            },
+            search: {
+                component: new SearchComponent(this.userModel, this.homeModel, this),
+                title: 'Search'
+            },
+            defaultRoute: 'index'
         });
 
         Handlebars.registerHelper('currentPage', () => {
             return super.getCurrentPage();
         });
 
+        //Childs
         this.addChildComponent(this._createUserBarComponent());
         this.addChildComponent(this._createModalLoginUserComponent());
         this.addChildComponent(this._createModalRegisterUserComponent());
@@ -68,10 +88,10 @@ class MainComponent extends Fronty.RouterComponent {
     _createModalLoginUserComponent() {
         var modal_login = new Fronty.ModelComponent(Handlebars.templates.modal_login, this.userModel, 'modallogin');
 
-        modal_login.addEventListener('click', '#loginbutton', (event) =>{
-            this.userService.login($('#formLoginInAlias').val(),$('#formLoginInPassword').val())
-                .then(()=> {
-                    this.goToPage('home');
+        modal_login.addEventListener('click', '#loginbutton', (event) => {
+            this.userService.login($('#formLoginInAlias').val(), $('#formLoginInPassword').val())
+                .then(() => {
+                    //TODO ver porque la primera vez no funciona bien
                     this.userModel.setLoggeduser($('#formLoginInAlias').val());
                     $('#modallogin').modal('hide');
                 })
@@ -119,9 +139,31 @@ class MainComponent extends Fronty.RouterComponent {
         return modal_register;
     }
 
-    _createModalUploadComponent(){
-        var modal_upload = new Fronty.ModelComponent(Handlebars.templates.modal_upload, this.userModel, 'modalupload');
+    _createModalUploadComponent() {
+        var modal_upload = new Fronty.ModelComponent(Handlebars.templates.modal_upload, this.videoModel, 'modalupload');
+        modal_upload.addModel('user', this.userModel);
 
+        this.addEventListener('click', '#uploadbutton', (ev) => {
+            ev.preventDefault();
+
+            var formData = new FormData(document.getElementById("uploadform"));
+            this.videosService.uploadvideo(formData)
+                .then((response) => {
+                    $('#modalupload').modal('hide');
+                    this.goToPage('video?id=' + response.id_video);//TODO ir a la pagina del video
+                })
+                .fail((xhr, errorThrown, statusText) => {
+                    if (xhr.status == 400) {
+                        this.videoModel.set(() => {
+                            this.videoModel.uploadErrors = xhr.responseJSON;
+                        });
+                    } else {
+                        alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
+                    }
+                });
+
+
+        });
 
         return modal_upload;
     }

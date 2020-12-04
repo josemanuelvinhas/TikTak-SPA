@@ -17,25 +17,34 @@
         </div>
     </div>
 
-
     <div class="col-12 col-xl-9 row m-0justify-content-center">
         <div class="col-12 row  mt-3 justify-content-center m-0">
-            <h4 class="m-0 mt-4">{{i18n 'Index' }}</h4>
+            <h4 class="m-0 mt-4">{{i18n 'Home' }}</h4>
         </div>
 
-        <div id="videosView"></div>
+        <div class="col-12 row row-cols-lg-3 row-cols-md-2 row-cols-1 m-0justify-content-center ">
+            {{#each videos}}
+                <div fronty-component="HomePrivateRowComponent" key="{{id}}" model="videos[{{@index}}]" id="item-{{id}}">
+                </div>
+            {{/each}}
+        </div>
 
 
         <div class="col-12 row justify-content-center align-items-center mt-2">
-            <a class="m-2">
+
+            {{#if previous}}
+                <a class="m-2" href="#home?page={{math page "-" 1}}">
                 <img class="bt-pag m-2" src="img/anterior.svg" alt="{{i18n 'Previous' }}">
-            </a>
+                </a>
+            {{/if}}
 
-            <a class="m-2"> Page </a>
+            <a class="m-2" href="#home?page={{page}}">{{page}}</a>
 
-            <a class="m-2">
+            {{#if next}}
+                <a class="m-2" href="#home?page={{math page "+" 1}}">
                 <img class="bt-pag m-2" src="img/proximo.svg" alt="{{i18n 'Next' }}">
-            </a>
+                </a>
+            {{/if}}
         </div>
 
     </div>
@@ -53,6 +62,8 @@
                     <input class="form-control" type="search" name="hashtag" placeholder="{{i18n 'SearchByHashtag' }}">
                 </div>
             </div>
+
+            <div id="trends">Loading...</div>
 
             <div id="topUsers">Loading...</div>
 
