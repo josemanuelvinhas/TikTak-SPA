@@ -99,7 +99,6 @@ class MainComponent extends Fronty.RouterComponent {
                     this.userModel.setLoggeduser($('#formLoginInAlias').val());
                     $('#modallogin').modal('hide');
                     this.goToPage("home");
-                    //document.location.reload(); TODO preguntar si se puede hacer reload
                 })
                 .catch((error) => {
                     this.userModel.set((model) => {

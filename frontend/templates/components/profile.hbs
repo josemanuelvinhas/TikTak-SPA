@@ -55,8 +55,8 @@
             {{#each profile.videos}}
                 <div class="col row justify-content-sm-center justify-content-center m-0">
                     <a href="#video?id={{this.id}}">
-                        <video class="video-card-perfil m-1" src="../upload_videos/{{this.videoname}}"
-                               muted loop></video>
+                        <video class="video-card-perfil m-1 action-play" id="video-{{id}}" item="{{id}}" src="../upload_videos/{{this.videoname}}"
+                               loop></video>
                     </a>
                 </div>
             {{/each}}

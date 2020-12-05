@@ -44,6 +44,16 @@ class ProfileComponent extends Fronty.ModelComponent {
                 });
         });
 
+        this.addEventListener('mouseover', '.action-play', (event) => {
+            var id = event.target.getAttribute('item');
+            $('#video-' + id).get(0).play();
+        });
+
+        this.addEventListener('mouseout', '.action-play', (event) => {
+            var id = event.target.getAttribute('item');
+            $('#video-' + id).get(0).pause();
+        });
+
     }
 
     onStart(){

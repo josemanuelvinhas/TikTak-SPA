@@ -31,7 +31,6 @@ class IndexComponent extends Fronty.ModelComponent {
         });
 
 
-
     }
 
     onStart() {
@@ -57,25 +56,25 @@ class IndexComponent extends Fronty.ModelComponent {
 
             if (data['likes'] !== undefined) {
                 this.videosModel.setLikes(data['likes']);
-            }else{
+            } else {
                 this.videosModel.setLikes([]);
             }
 
             if (data['followings'] !== undefined) {
                 this.videosModel.setFollowings(data['followings']);
-            }else{
+            } else {
                 this.videosModel.setFollowings([]);
             }
 
             if (data['next'] !== undefined) {
                 this.videosModel.setNext(data['next']);
-            }else{
+            } else {
                 this.videosModel.setNext(false);
             }
 
             if (data['previous'] !== undefined) {
                 this.videosModel.setPrevious(data['previous']);
-            }else{
+            } else {
                 this.videosModel.setPrevious(false);
             }
         }).fail((xhr, errorThrown, statusText) => {
@@ -191,9 +190,18 @@ class IndexRowComponent extends Fronty.ModelComponent {
 
         this.addEventListener('mouseover', '.action-share', (event) => {
             var item = event.target.getAttribute('item');
-            $('#tooltip-'+item).tooltip("show");
+            $('#tooltip-' + item).tooltip("show");
         });
 
+        this.addEventListener('mouseover', '.action-play', (event) => {
+            var id = event.target.getAttribute('item');
+            $('#video-' + id).get(0).play();
+        });
+
+        this.addEventListener('mouseout', '.action-play', (event) => {
+            var id = event.target.getAttribute('item');
+            $('#video-' + id).get(0).pause();
+        });
 
 
     }
