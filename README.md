@@ -142,11 +142,11 @@ Pasos para probar la aplicación:
 
 ## Construido con :hammer_and_wrench:
 
-####Servidor REST
+#### Servidor REST
 * [mvcblog](https://github.com/lipido/mvcblog) - Base API REST
 * [PhpStorm](https://www.jetbrains.com/es-es/phpstorm/) - IDE PHP
 
-####Cliente
+#### Cliente
 * [WebStorm](https://www.jetbrains.com/es-es/webstorm/) - IDE JavaScript
 * [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/) - Framework 
 * [fronty.js](https://github.com/lipido/fronty.js) - Component-based front-end JavaScript library for educational purposes
