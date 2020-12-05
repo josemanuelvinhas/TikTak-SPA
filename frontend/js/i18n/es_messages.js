@@ -23,7 +23,7 @@ I18n.translations = {
     'Profile' : 'Perfil',
     'Home' : 'Portada',
     'Index' : 'Inicio',
-    'Upload Video' : 'Subir Video',
+    'Upload video' : 'Subir video',
     'followers' : 'seguidores',
     'following' : 'seguidos',
     'Description' : 'Descripción',
@@ -43,5 +43,6 @@ I18n.translations = {
     'Delete' : 'Eliminar',
     'Share' : 'Compartir',
     'Search by' : 'Buscar por',
-    'Error uploading video' : 'Error subiendo el video'
+    'Error uploading video' : 'Error subiendo el video',
+    'Only .mp4 videos' : 'Solo videos .mp4'
 }

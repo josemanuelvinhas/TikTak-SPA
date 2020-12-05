@@ -11,10 +11,10 @@ I18n.translations = {
     'Top-5 Users' : 'Top-5 Usuarios',
     'Password' : 'Contrasinal',
     'Username' : 'Alias',
-    'Email' : 'Correo electrónico',
+    'Email' : 'Enderezo electrónico',
     'SearchByHashtag' : 'BuscarPorCancelo',
     'Username already exists' : 'O alias xa existe',
-    'Email already exists' : 'O correo xa existe',
+    'Email already exists' : 'O enderezo electrónico xa existe',
     'Invalid credentials' : 'Credenciais non válidas',
     'User Profile' : 'O Meu Perfil',
     'Welcome' : 'Benvido',
@@ -23,7 +23,7 @@ I18n.translations = {
     'Profile' : 'Perfil',
     'Home' : 'Portada',
     'Index' : 'Inicio',
-    'Upload Video' : 'Subir Video',
+    'Upload video' : 'Subir video',
     'followers' : 'seguidores',
     'following' : 'seguidos',
     'Description' : 'Descrición',
@@ -43,5 +43,6 @@ I18n.translations = {
     'Delete' : 'Eliminar',
     'Share' : 'Compartir',
     'Search by' : 'Buscar por',
-    'Error uploading video' : 'Erro subindo o video'
+    'Error uploading video' : 'Erro subindo o video',
+    'Only .mp4 videos' : 'Só videos .mp4'
 }

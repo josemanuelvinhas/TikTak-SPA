@@ -16,7 +16,8 @@ function loadTextFile(url) {
 
 // Configuration
 var AppConfig = {
-    backendServer: 'http://localhost/TikTak-SPA'
+    backendServer: 'http://localhost/TikTak-SPA',
+    frontendServer: 'http://localhost/TikTak-SPA/frontend'
     //backendServer: '/mvcblog'
 }
 

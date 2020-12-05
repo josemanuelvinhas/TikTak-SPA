@@ -1,6 +1,6 @@
-class HomeModel extends Fronty.Model {
+class VideosModel extends Fronty.Model {
     constructor() {
-        super('HomeModel');
+        super('VideosModel');
 
         this.videos = [];
         this.next = false;
@@ -16,6 +16,7 @@ class HomeModel extends Fronty.Model {
 
     setVideos(videos) {
         this.set((self) => {
+            self.videos = [];
             for (var i = 0; i < videos.length; i++) {
                 self.videos.push(new VideoModel(
                     videos[i]['id'],

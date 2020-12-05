@@ -73,10 +73,11 @@
                         {{/if}}
                     </div>
                     <div class="row m-0 p-0 text-right">
-                        <a onclick="copyToClipboard('')" data-toggle="popover" data-placement="top" data-trigger="hover"
-                           data-content="{{i18n 'Click to copy to clipboard' }}"><img class="bt-fav m-2"
-                                                                                      src="img/compartir.svg"
-                                                                                      alt="{{i18n 'Share' }}"></a>
+                        <a><img id="tooltip-{{video.id}}"
+                                data-toggle="tooltip" data-placement="top" title="{{i18n 'Click to copy to clipboard' }}"
+                                item="{{video.id}}" class="bt-fav m-2 action-share"
+                                src="img/compartir.svg"
+                                alt="{{i18n 'Share' }}"></a>
                     </div>
                 </div>
 

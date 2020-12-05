@@ -1,10 +1,11 @@
 class IndexComponent extends Fronty.ModelComponent {
-    constructor(homeModel, userModel, router) {
-        super(Handlebars.templates.index, homeModel, "maincontent", null);
+    constructor(videosModel, userModel, router) {
+        super(Handlebars.templates.index, videosModel, "maincontent", null);
 
         //Models
-        this.homeModel = homeModel;
+        this.videosModel = videosModel;
         this.userModel = userModel;
+        this.page = 0;
         this.addModel('user', userModel);
 
         //Router
@@ -18,6 +19,19 @@ class IndexComponent extends Fronty.ModelComponent {
         //Childs
         this.addChildComponent(this._createTopUsersBarComponent());
         this.addChildComponent(this._createTrendsBarComponent());
+
+        this.addEventListener('submit', '#search-top', () => {
+            var value = $('#hashtag-top').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
+
+        this.addEventListener('submit', '#search-right', () => {
+            var value = $('#hashtag-right').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
+
+
+
     }
 
     onStart() {
@@ -31,64 +45,82 @@ class IndexComponent extends Fronty.ModelComponent {
             page = 0;
         }
 
+        this.page = page;
+
         this.homeService.getPublicHomePage(page).then((data) => {
 
-            this.homeModel.setVideos(data['videos']);
-            this.homeModel.setTopUsers(data['topUsers']);
-            this.homeModel.setTrends(data['trends']);
-            this.homeModel.setPage(page);
+            this.videosModel.setVideos(data['videos']);
+            this.videosModel.setTopUsers(data['topUsers']);
+            this.videosModel.setTrends(data['trends']);
+            this.videosModel.setPage(page);
 
 
             if (data['likes'] !== undefined) {
-                this.homeModel.setLikes(data['likes']);
+                this.videosModel.setLikes(data['likes']);
+            }else{
+                this.videosModel.setLikes([]);
             }
 
             if (data['followings'] !== undefined) {
-                this.homeModel.setFollowings(data['followings']);
+                this.videosModel.setFollowings(data['followings']);
+            }else{
+                this.videosModel.setFollowings([]);
             }
 
             if (data['next'] !== undefined) {
-                this.homeModel.setNext(data['next']);
+                this.videosModel.setNext(data['next']);
+            }else{
+                this.videosModel.setNext(false);
             }
 
             if (data['previous'] !== undefined) {
-                this.homeModel.setPrevious(data['previous']);
+                this.videosModel.setPrevious(data['previous']);
+            }else{
+                this.videosModel.setPrevious(false);
+            }
+        }).fail((xhr, errorThrown, statusText) => {
+            if (xhr.status == 400) {
+                this.router.goToPage("index");
+            } else {
+                alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
             }
         });
+
+
     }
 
 
     _createTopUsersBarComponent() {
-        var topUsers = new Fronty.ModelComponent(Handlebars.templates.topUsers, this.homeModel, 'topUsers');
+        var topUsers = new Fronty.ModelComponent(Handlebars.templates.topUsers, this.videosModel, 'topUsers');
 
         return topUsers;
     }
 
     _createTrendsBarComponent() {
-        var trends = new Fronty.ModelComponent(Handlebars.templates.trends, this.homeModel, 'trends');
+        var trends = new Fronty.ModelComponent(Handlebars.templates.trends, this.videosModel, 'trends');
 
         return trends;
     }
 
     // Override
     createChildModelComponent(className, element, id, modelItem) {
-        return new HomePublicRowComponent(modelItem, this.homeModel, this.userModel, this.router, this);
+        return new IndexRowComponent(modelItem, this.videosModel, this.userModel, this.router, this);
     }
 
 
 }
 
 
-class HomePublicRowComponent extends Fronty.ModelComponent {
-    constructor(videoModel, homeModel, userModel, router, indexComponent) {
+class IndexRowComponent extends Fronty.ModelComponent {
+    constructor(videoModel, videosModel, userModel, router, indexComponent) {
         super(Handlebars.templates.index_row, videoModel, null, null);
 
         this.indexComponent = indexComponent;
 
         this.userModel = userModel;
         this.addModel('user', userModel);
-        this.homeModel = homeModel;
-        this.addModel('home', homeModel);
+        this.videosModel = videosModel;
+        this.addModel('home', videosModel);
 
         this.router = router;
 
@@ -108,7 +140,7 @@ class HomePublicRowComponent extends Fronty.ModelComponent {
                     alert('Error: like')
                 })
                 .always(() => {
-                    this.indexComponent.updateVideos();
+                    this.indexComponent.updateVideos(this.indexComponent.page);
                 });
         });
 
@@ -119,7 +151,7 @@ class HomePublicRowComponent extends Fronty.ModelComponent {
                     alert('Error: dislike')
                 })
                 .always(() => {
-                    this.indexComponent.updateVideos();
+                    this.indexComponent.updateVideos(this.indexComponent.page);
                 });
         });
 
@@ -130,7 +162,7 @@ class HomePublicRowComponent extends Fronty.ModelComponent {
                     alert('Error: follow')
                 })
                 .always(() => {
-                    this.indexComponent.updateVideos();
+                    this.indexComponent.updateVideos(this.indexComponent.page);
                 });
         });
 
@@ -138,13 +170,31 @@ class HomePublicRowComponent extends Fronty.ModelComponent {
             var username = event.target.getAttribute('item');
             this.indexComponent.followerServices.unfollow(username)
                 .fail(() => {
-                    alert('Error: follow')
+                    alert('Error: unfollow')
                 })
                 .always(() => {
-                    this.indexComponent.updateVideos();
+                    this.indexComponent.updateVideos(this.indexComponent.page);
                 });
         });
 
-    }
+        this.addEventListener('click', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            var aux = document.createElement("input");
 
+            var textoACopiar = AppConfig.frontendServer + '/#video?id=' + item;
+            aux.setAttribute("value", textoACopiar);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+        });
+
+        this.addEventListener('mouseover', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            $('#tooltip-'+item).tooltip("show");
+        });
+
+
+
+    }
 }

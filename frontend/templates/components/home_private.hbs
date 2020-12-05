@@ -1,19 +1,18 @@
 <div class="row col-12">
 
     <div class="col-12 justify-content-center d-xl-none d-block">
-        <div class="col-12 mt-4">
-
-            <div class="col-12 mb-4 mt-5">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">#</div>
+        <div class="col-12 mt-4 p-0">
+            <form id="search-top">
+                <div class="col-12 mb-4 mt-5">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">#</div>
+                        </div>
+                        <input id="hashtag-top" class="form-control" name="hashtag"
+                               placeholder="{{i18n 'SearchByHashtag' }}">
                     </div>
-                    <input type="hidden" name="controller" value="video">
-                    <input type="hidden" name="action" value="search">
-                    <input class="form-control" type="search" name="hashtag" placeholder="{{i18n 'SearchByHashtag' }}">
                 </div>
-            </div>
-
+            </form>
         </div>
     </div>
 
@@ -53,13 +52,16 @@
     <div class="col-3 justify-content-center d-none d-xl-block">
         <div class="row sticky-top">
             <div class="col-12 mb-4 mt-5">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">#</div>
-                    </div>
-                    <input type="hidden" name="controller" value="video">
-                    <input type="hidden" name="action" value="search">
-                    <input class="form-control" type="search" name="hashtag" placeholder="{{i18n 'SearchByHashtag' }}">
+                <div class="col-12 mb-4 mt-5 p-0">
+                    <form id="search-right">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">#</div>
+                            </div>
+                            <input id="hashtag-right" class="form-control" name="hashtag"
+                                   placeholder="{{i18n 'SearchByHashtag' }}">
+                        </div>
+                    </form>
                 </div>
             </div>
 

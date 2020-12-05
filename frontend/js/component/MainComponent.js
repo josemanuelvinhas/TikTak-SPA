@@ -4,7 +4,11 @@ class MainComponent extends Fronty.RouterComponent {
 
         //Models
         this.userModel = new UserModel();
-        this.homeModel = new HomeModel();
+
+        this.indexModel = new VideosModel();
+        this.searchModel = new VideosModel();
+        this.homeModel = new VideosModel();
+
         this.videoModel = new VideoModel();
 
         //Service
@@ -14,7 +18,7 @@ class MainComponent extends Fronty.RouterComponent {
         //Router
         super.setRouterConfig({
             index: {
-                component: new IndexComponent(this.homeModel, this.userModel, this),
+                component: new IndexComponent(this.indexModel, this.userModel, this),
                 title: 'Index'
             },
             home: {
@@ -30,7 +34,7 @@ class MainComponent extends Fronty.RouterComponent {
                 title: 'Profile'
             },
             search: {
-                component: new SearchComponent(this.userModel, this.homeModel, this),
+                component: new SearchComponent(this.userModel, this.searchModel, this),
                 title: 'Search'
             },
             defaultRoute: 'index'
@@ -80,6 +84,7 @@ class MainComponent extends Fronty.RouterComponent {
         userbar.addEventListener('click', '#buttonlogout', () => {
             this.userModel.logout();
             this.userService.logout();
+            this.goToPage("index");
         });
 
         return userbar;
@@ -91,9 +96,10 @@ class MainComponent extends Fronty.RouterComponent {
         modal_login.addEventListener('click', '#loginbutton', (event) => {
             this.userService.login($('#formLoginInAlias').val(), $('#formLoginInPassword').val())
                 .then(() => {
-                    //TODO ver porque la primera vez no funciona bien
                     this.userModel.setLoggeduser($('#formLoginInAlias').val());
                     $('#modallogin').modal('hide');
+                    this.goToPage("home");
+                    //document.location.reload(); TODO preguntar si se puede hacer reload
                 })
                 .catch((error) => {
                     this.userModel.set((model) => {
@@ -150,7 +156,12 @@ class MainComponent extends Fronty.RouterComponent {
             this.videosService.uploadvideo(formData)
                 .then((response) => {
                     $('#modalupload').modal('hide');
-                    this.goToPage('video?id=' + response.id_video);//TODO ir a la pagina del video
+                    $('#formUploadInVideo').val('');
+                    $('#formUploadInDescripcion').val('');
+                    this.videoModel.set(() => {
+                        this.videoModel.uploadErrors = '';
+                    });
+                    this.goToPage('video?id=' + response.id_video);
                 })
                 .fail((xhr, errorThrown, statusText) => {
                     if (xhr.status == 400) {
@@ -161,8 +172,6 @@ class MainComponent extends Fronty.RouterComponent {
                         alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
                     }
                 });
-
-
         });
 
         return modal_upload;

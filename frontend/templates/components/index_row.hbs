@@ -15,7 +15,8 @@
                         </div>
                     {{else}}
                         <div>
-                            <input class="btn bt-primary m-1 action-follow" type="submit" item="{{author}}" value="{{i18n 'Follow' }}">
+                            <input class="btn bt-primary m-1 action-follow" type="submit" item="{{author}}"
+                                   value="{{i18n 'Follow' }}">
                         </div>
                     {{/isInArray}}
 
@@ -28,9 +29,9 @@
 
         <div class="card-body row justify-content-center p-2">
             <a href="#video?id={{id}}">
-                <video class="video-card" src="../upload_videos/{{videoname}}" autoplay muted
-                       loop
-                ></video>
+            <video class="video-card" src="../upload_videos/{{videoname}}" autoplay muted
+                   loop
+            ></video>
             </a>
         </div>
 
@@ -41,13 +42,15 @@
                     {{#if user.isLogged}}
                         {{#isInArray home.likes id}}
                             <div>
-                                <input class="bt-fav m-2 action-dislike" item="{{id}}" type="image" src="img/estrella_llena.svg"
+                                <input class="bt-fav m-2 action-dislike" item="{{id}}" type="image"
+                                       src="img/estrella_llena.svg"
                                        alt="{{i18n 'Dislike' }}">
                             </div>
                             {{nlikes}}
                         {{else}}
                             <div>
-                                <input class="bt-fav m-2 action-like" item="{{id}}" type="image" src="img/estrella_vacia.svg"
+                                <input class="bt-fav m-2 action-like" item="{{id}}" type="image"
+                                       src="img/estrella_vacia.svg"
                                        alt="{{i18n 'Like' }}">
                             </div>
                             {{nlikes}}
@@ -56,15 +59,17 @@
                     {{else}}
 
                         <a id="favLogin"><img class="bt-fav m-2"
-                                                          src="img/estrella_vacia.svg"
-                                                          alt="{{i18n 'Like' }}"></a>{{nlikes}}
+                                              src="img/estrella_vacia.svg"
+                                              alt="{{i18n 'Like' }}"></a>{{nlikes}}
                     {{/if}}
                 </div>
 
-                <a onclick="copyToClipboard('')" data-toggle="popover" data-placement="top" data-trigger="hover"
-                data-content="{{i18n 'Click to copy to clipboard' }}"><img class="bt-fav m-2"
-                                                                              src="img/compartir.svg"
-                                                                              alt="{{i18n 'Share' }}"></a>
+                <a><img id="tooltip-{{id}}"
+                        data-toggle="tooltip" data-placement="top" title="{{i18n 'Click to copy to clipboard' }}"
+                        item="{{id}}" class="bt-fav m-2 action-share"
+                        src="img/compartir.svg"
+                        alt="{{i18n 'Share' }}"></a>
+
             </div>
             <div class="row justify-content-center">
                 <p class="m-0 p-0">{{videodescription}}</p>

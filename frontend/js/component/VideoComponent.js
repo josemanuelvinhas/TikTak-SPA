@@ -73,6 +73,23 @@ class VideoComponent extends Fronty.ModelComponent {
                 });
         });
 
+        this.addEventListener('click', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            var aux = document.createElement("input");
+
+            var textoACopiar = AppConfig.frontendServer + '/#video?id=' + item;
+            aux.setAttribute("value", textoACopiar);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+        });
+
+        this.addEventListener('mouseover', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            $('#tooltip-'+item).tooltip("show");
+        });
+
     }
 
     onStart(){

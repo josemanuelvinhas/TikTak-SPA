@@ -1,11 +1,14 @@
 class SearchComponent extends Fronty.ModelComponent {
-    constructor(userModel, homeModel, router) {
-        super(Handlebars.templates.search, homeModel, "maincontent", null);
+    constructor(userModel, videosModel, router) {
+        super(Handlebars.templates.search, videosModel, "maincontent", null);
 
         //Models
-        this.homeModel = homeModel;
+        this.videosModel = videosModel;
         this.userModel = userModel;
         this.addModel('user', userModel);
+
+        this.hashtag = '';
+        this.page = 0;
 
         //Router
         this.router = router;
@@ -16,7 +19,18 @@ class SearchComponent extends Fronty.ModelComponent {
 
         //Childs
         this.addChildComponent(this._createTopUsersBarComponent());
+
         this.addChildComponent(this._createTrendsBarComponent());
+
+        this.addEventListener('submit', '#search-top', () => {
+            var value = $('#hashtag-top').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
+
+        this.addEventListener('submit', '#search-right', () => {
+            var value = $('#hashtag-right').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
     }
 
     onStart() {
@@ -34,49 +48,67 @@ class SearchComponent extends Fronty.ModelComponent {
             hashtag = '';
         }
 
+        this.page = page;
+        this.hashtag = hashtag;
+
         this.videosServices.search(hashtag, page).then((data) => {
 
-            this.homeModel.setVideos(data['videos']);
-            this.homeModel.setTopUsers(data['topUsers']);
-            this.homeModel.setTrends(data['trends']);
-            this.homeModel.setPage(page);
+            this.videosModel.setVideos(data['videos']);
+            this.videosModel.setTopUsers(data['topUsers']);
+            this.videosModel.setTrends(data['trends']);
+            this.videosModel.setPage(page);
 
-            this.homeModel.setHashtag(hashtag);
+            this.videosModel.setHashtag(hashtag);
 
             if (data['likes'] !== undefined) {
-                this.homeModel.setLikes(data['likes']);
+                this.videosModel.setLikes(data['likes']);
+            }else{
+                this.videosModel.setLikes([]);
             }
 
             if (data['followings'] !== undefined) {
-                this.homeModel.setFollowings(data['followings']);
+                this.videosModel.setFollowings(data['followings']);
+            }else{
+                this.videosModel.setFollowings([]);
             }
 
             if (data['next'] !== undefined) {
-                this.homeModel.setNext(data['next']);
+                this.videosModel.setNext(data['next']);
+            }else{
+                this.videosModel.setNext(false);
             }
 
             if (data['previous'] !== undefined) {
-                this.homeModel.setPrevious(data['previous']);
+                this.videosModel.setPrevious(data['previous']);
+            }else{
+                this.videosModel.setPrevious(false);
+            }
+
+        }).fail((xhr, errorThrown, statusText) => {
+            if (xhr.status == 400) {
+                this.router.goToPage("index");
+            } else {
+                alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
             }
         });
     }
 
 
     _createTopUsersBarComponent() {
-        var topUsers = new Fronty.ModelComponent(Handlebars.templates.topUsers, this.homeModel, 'topUsers');
+        var topUsers = new Fronty.ModelComponent(Handlebars.templates.topUsers, this.videosModel, 'topUsers');
 
         return topUsers;
     }
 
     _createTrendsBarComponent() {
-        var trends = new Fronty.ModelComponent(Handlebars.templates.trends, this.homeModel, 'trends');
+        var trends = new Fronty.ModelComponent(Handlebars.templates.trends, this.videosModel, 'trends');
 
         return trends;
     }
 
     // Override
     createChildModelComponent(className, element, id, modelItem) {
-        return new SearchRowComponent(modelItem, this.homeModel, this.userModel, this.router, this);
+        return new SearchRowComponent(modelItem, this.videosModel, this.userModel, this.router, this);
     }
 
 
@@ -84,15 +116,15 @@ class SearchComponent extends Fronty.ModelComponent {
 
 
 class SearchRowComponent extends Fronty.ModelComponent {
-    constructor(videoModel, homeModel, userModel, router, searchComponent) {
+    constructor(videoModel, videosModel, userModel, router, searchComponent) {
         super(Handlebars.templates.search_row, videoModel, null, null);
 
         this.searchComponent = searchComponent;
 
         this.userModel = userModel;
         this.addModel('user', userModel);
-        this.homeModel = homeModel;
-        this.addModel('home', homeModel);
+        this.videosModel = videosModel;
+        this.addModel('home', videosModel);
 
         this.router = router;
 
@@ -112,7 +144,7 @@ class SearchRowComponent extends Fronty.ModelComponent {
                     alert('Error: like')
                 })
                 .always(() => {
-                    this.searchComponent.updateSearch();
+                    this.searchComponent.updateSearch(this.searchComponent.hashtag,this.searchComponent.page);
                 });
         });
 
@@ -123,7 +155,7 @@ class SearchRowComponent extends Fronty.ModelComponent {
                     alert('Error: dislike')
                 })
                 .always(() => {
-                    this.searchComponent.updateSearch();
+                    this.searchComponent.updateSearch(this.searchComponent.hashtag,this.searchComponent.page);
                 });
         });
 
@@ -134,7 +166,7 @@ class SearchRowComponent extends Fronty.ModelComponent {
                     alert('Error: follow')
                 })
                 .always(() => {
-                    this.searchComponent.updateSearch();
+                    this.searchComponent.updateSearch(this.searchComponent.hashtag,this.searchComponent.page);
                 });
         });
 
@@ -145,8 +177,25 @@ class SearchRowComponent extends Fronty.ModelComponent {
                     alert('Error: follow')
                 })
                 .always(() => {
-                    this.searchComponent.updateSearch();
+                    this.searchComponent.updateSearch(this.searchComponent.hashtag,this.searchComponent.page);
                 });
+        });
+
+        this.addEventListener('click', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            var aux = document.createElement("input");
+
+            var textoACopiar = AppConfig.frontendServer + '/#video?id=' + item;
+            aux.setAttribute("value", textoACopiar);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+        });
+
+        this.addEventListener('mouseover', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            $('#tooltip-'+item).tooltip("show");
         });
 
     }

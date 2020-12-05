@@ -3,10 +3,11 @@ class HomePrivateComponent extends Fronty.ModelComponent {
         super(Handlebars.templates.home_private, homeModel, "maincontent", null);
 
         //Models
-        this.homeModel = homeModel;
+        this.homeModel = homeModel; //Instance of VideosModel
         this.userModel = userModel;
         this.addModel('user', this.homeModel);
 
+        this.page = 0;
 
         //Router
         this.router = router;
@@ -19,6 +20,17 @@ class HomePrivateComponent extends Fronty.ModelComponent {
         //Childs
         this.addChildComponent(this._createTopUsersBarComponent());
         this.addChildComponent(this._createTrendsBarComponent());
+
+        this.addEventListener('submit', '#search-top', () => {
+            var value = $('#hashtag-top').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
+
+        this.addEventListener('submit', '#search-right', () => {
+            var value = $('#hashtag-right').val();
+            this.router.goToPage('search?hashtag=' + value);
+        });
+
     }
 
     onStart() {
@@ -32,24 +44,41 @@ class HomePrivateComponent extends Fronty.ModelComponent {
             page = 0;
         }
 
-        this.homeService.getPrivateHomePage(this.userModel.currentUser, page).then((data) => {
+        if (this.userModel.isLogged === false) {
+            this.router.goToPage("index");
+        } else {
 
-            this.homeModel.setVideos(data['videos']);
-            this.homeModel.setTopUsers(data['topUsers']);
-            this.homeModel.setTrends(data['trends']);
-            this.homeModel.setPage(page);
-            this.homeModel.setLikes(data['likes']);
-            this.homeModel.setFollowings(data['followings']);
+            this.page = page;
+
+            this.homeService.getPrivateHomePage(this.userModel.currentUser, page).then((data) => {
+
+                this.homeModel.setVideos(data['videos']);
+                this.homeModel.setTopUsers(data['topUsers']);
+                this.homeModel.setTrends(data['trends']);
+                this.homeModel.setPage(page);
+                this.homeModel.setLikes(data['likes']);
+                this.homeModel.setFollowings(data['followings']);
 
 
-            if (data['next'] !== undefined) {
-                this.homeModel.setNext(data['next']);
-            }
+                if (data['next'] !== undefined) {
+                    this.homeModel.setNext(data['next']);
+                } else {
+                    this.homeModel.setNext(false);
+                }
 
-            if (data['previous'] !== undefined) {
-                this.homeModel.setPrevious(data['previous']);
-            }
-        });
+                if (data['previous'] !== undefined) {
+                    this.homeModel.setPrevious(data['previous']);
+                } else {
+                    this.homeModel.setPrevious(false);
+                }
+            }).fail((xhr, errorThrown, statusText) => {
+                if (xhr.status == 400) {
+                    this.router.goToPage("home");
+                } else {
+                    alert('an error has occurred during request: ' + statusText + '.' + xhr.responseText);
+                }
+            });
+        }
     }
 
 
@@ -94,7 +123,7 @@ class HomePrivateRowComponent extends Fronty.ModelComponent {
                     alert('Error: like')
                 })
                 .always(() => {
-                    this.homePrivateComponent.updateVideos();
+                    this.homePrivateComponent.updateVideos(this.homePrivateComponent.page);
                 });
         });
 
@@ -105,7 +134,7 @@ class HomePrivateRowComponent extends Fronty.ModelComponent {
                     alert('Error: dislike')
                 })
                 .always(() => {
-                    this.homePrivateComponent.updateVideos();
+                    this.homePrivateComponent.updateVideos(this.homePrivateComponent.page);
                 });
         });
 
@@ -116,7 +145,7 @@ class HomePrivateRowComponent extends Fronty.ModelComponent {
                     alert('Error: follow')
                 })
                 .always(() => {
-                    this.homePrivateComponent.updateVideos();
+                    this.homePrivateComponent.updateVideos(this.homePrivateComponent.page);
                 });
         });
 
@@ -127,8 +156,30 @@ class HomePrivateRowComponent extends Fronty.ModelComponent {
                     alert('Error: follow')
                 })
                 .always(() => {
-                    this.homePrivateComponent.updateVideos();
+                    this.homePrivateComponent.updateVideos(this.homePrivateComponent.page);
                 });
+        });
+
+        this.addEventListener('load', '.action-popover', (event) => {
+            var id = event.target.getAttribute('id');
+            $('#' + id).popover();
+        });
+
+        this.addEventListener('click', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            var aux = document.createElement("input");
+
+            var textoACopiar = AppConfig.frontendServer + '/#video?id=' + item;
+            aux.setAttribute("value", textoACopiar);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+        });
+
+        this.addEventListener('mouseover', '.action-share', (event) => {
+            var item = event.target.getAttribute('item');
+            $('#tooltip-'+item).tooltip("show");
         });
 
     }
