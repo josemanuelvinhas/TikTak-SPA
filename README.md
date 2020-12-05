@@ -148,7 +148,7 @@ Pasos para probar la aplicación:
 
 #### Cliente
 * [WebStorm](https://www.jetbrains.com/es-es/webstorm/) - IDE JavaScript
-* [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/) - Framework 
+* [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/) 
 * [fronty.js](https://github.com/lipido/fronty.js) - Component-based front-end JavaScript library for educational purposes
 * [handlebars](https://handlebarsjs.com/) - Motor de plantillas
 
