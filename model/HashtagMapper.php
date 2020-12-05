@@ -31,7 +31,7 @@ class HashtagMapper
         $hashtags = array();
 
         foreach ($hashtag as $hg) {
-            array_push($hashtags, $hg["hashtag"]);
+            array_push($hashtags, substr($hg["hashtag"],1));
         }
 
         return $hashtags;

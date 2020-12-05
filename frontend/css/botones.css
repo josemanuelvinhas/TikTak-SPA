@@ -1,0 +1,77 @@
+.bt-primary {
+  color: #fff;
+  background-color: #EE1D52;
+  border-color: #EE1D52;
+}
+
+.bt-primary:hover {
+  color: #fff;
+  background-color: #EE1D52;
+  border-color: #EE1D52;
+}
+
+.bt-outline-primary {
+  color: #EE1D52;
+  border-color: #EE1D52;
+}
+
+.bt-outline-primary:hover {
+  color: #fff;
+  background-color: #EE1D52;
+  border-color: #EE1D52;
+}
+
+.bt-secondary {
+  color: #fff;
+  background-color: #04bfad;
+  border-color: #04bfad;
+}
+
+.bt-secondary:hover {
+  color: #fff;
+  background-color: #038c7F;
+  border-color: #038c7F;
+}
+
+.bt-outline-secondary {
+  color: #04bfad;
+  border-color: #04bfad;
+}
+
+.bt-outline-secondary:hover {
+  color: #fff;
+  background-color: #038c7F;
+  border-color: #038c7F;
+}
+
+.bg-gris {
+  background-color: #e9ecef;
+}
+
+.bt-fav{
+  color: #04bfad;
+  height: 2em;
+}
+
+.bt-pag{
+  height: 1em;
+}
+
+.bt-menu{
+  height: 1.4em;
+}
+
+.bt-subir{
+  height: 2em;
+}
+
+@keyframes backgroundflash {
+  75% { opacity:1.0}
+  100% {opacity:0.0; display:none}
+}
+
+.flash {
+  border: 1px solid green;
+  border-radius: 1em;
+  animation: backgroundflash 5s forwards;
+}

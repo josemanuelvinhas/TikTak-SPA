@@ -1,0 +1,74 @@
+<div class="row col-12">
+
+    <div class="col-12 justify-content-center d-xl-none d-block">
+        <div class="col-12 mt-4 p-0">
+            <form id="search-top">
+                <div class="col-12 mb-4 mt-5">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">#</div>
+                        </div>
+                        <input id="hashtag-top" class="form-control" name="hashtag"
+                               placeholder="{{i18n 'SearchByHashtag' }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-9 row m-0justify-content-center">
+        <div class="col-12 row  mt-3 justify-content-center m-0">
+            <h4 class="m-0 mt-4">{{i18n 'Index' }}</h4>
+        </div>
+
+        <div class="col-12 row row-cols-lg-3 row-cols-md-2 row-cols-1 m-0justify-content-center ">
+            {{#each videos}}
+                <div fronty-component="IndexRowComponent" key="{{id}}" model="videos[{{@index}}]" id="item-{{id}}">
+                </div>
+            {{/each}}
+        </div>
+
+
+        <div class="col-12 row justify-content-center align-items-center mt-2">
+
+            {{#if previous}}
+                <a class="m-2" href="#index?page={{math page "-" 1}}">
+                <img class="bt-pag m-2" src="img/anterior.svg" alt="{{i18n 'Previous' }}">
+                </a>
+            {{/if}}
+
+            <a class="m-2" href="#index?page={{page}}">{{page}}</a>
+
+            {{#if next}}
+                <a class="m-2" href="#index?page={{math page "+" 1}}">
+                <img class="bt-pag m-2" src="img/proximo.svg" alt="{{i18n 'Next' }}">
+                </a>
+            {{/if}}
+        </div>
+
+    </div>
+
+
+    <div class="col-3 justify-content-center d-none d-xl-block">
+        <div class="row sticky-top">
+            <div class="col-12 mb-4 mt-5">
+                <div class="col-12 mb-4 mt-5 p-0">
+                    <form id="search-right">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">#</div>
+                            </div>
+                            <input id="hashtag-right" class="form-control" name="hashtag"
+                                   placeholder="{{i18n 'SearchByHashtag' }}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="trends">Loading...</div>
+
+            <div id="topUsers">Loading...</div>
+
+        </div>
+    </div>
+</div>

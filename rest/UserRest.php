@@ -51,10 +51,10 @@ class UserRest extends BaseRest
 
                 $errorsExists = array();
                 if ($this->userMapper->usernameExists($user->getUsername())) {
-                    $errorsExists["username"] = "Username already exists";
+                    $errorsExists["username"] = ["Username already exists"];
                 }
                 if ($this->userMapper->emailExists($user->getEmail())) {
-                    $errorsExists["email"] = "Email already exists";
+                    $errorsExists["email"] = ["Email already exists"];
                 }
 
                 if (empty($errorsExists)) {

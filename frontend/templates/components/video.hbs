@@ -1,0 +1,92 @@
+<div class="row col-12">
+    <div class="col-12 justify-content-center">
+        <div class="col-10 col-sm-12 row justify-content-center m-0 mt-3 mb-3 p-0">
+            <div class="m-0 p-0 list-group">
+                <div
+                        class="row row-cols-2 justify-content-center align-items-center p-0 pb-2 pt-2 list-group-item bg-gris">
+                    <div class="col font-weight-bold">
+                        <a class="text-dark" href="#profile?username={{video.author}}">@{{video.author}}</a>
+                    </div>
+                    <div class="col text-right">
+
+                        {{#if isLogged}}
+                            {{#if_eq currentUser video.author}}
+                                <div>
+                                    <input class="bt-fav m-2 action-delete" item="{{video.id}}" type="image"
+                                           src="img/borrar.svg"
+                                           alt="{{i18n 'Delete' }}">
+                                </div>
+                            {{else}}
+                                {{#if video.following}}
+                                    <div>
+                                        <input class="btn bt-outline-primary m-1 action-unfollow"
+                                               item="{{video.author}}" type="submit"
+                                               value="{{i18n 'Unfollow' }}">
+                                    </div>
+                                {{else}}
+                                    <div>
+                                        <input class="btn bt-primary m-1 action-follow" item="{{video.author}}"
+                                               type="submit"
+                                               value="{{i18n 'Follow' }}">
+                                    </div>
+                                {{/if}}
+
+                            {{/if_eq}}
+
+                        {{else}}
+                            <button class="btn bt-primary m-1 action-login">{{i18n 'Follow' }}</button>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 p-0 pt-3 pb-3 list-group-item">
+                    <div class="col row justify-content-center m-0">
+                        <video class="video-card-view m-1" src="../upload_videos/{{video.videoname}}" autoplay muted
+                               loop controls></video>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between align-items-center pt-3 pb-3 list-group-item">
+
+                    <div class="row m-0 p-0 align-items-center">
+                        {{#if isLogged}}
+                            {{#if video.like}}
+                                <div>
+                                    <input class="bt-fav m-2 action-dislike" item="{{video.id}}" type="image"
+                                           src="img/estrella_llena.svg"
+                                           alt="{{i18n 'Dislike' }}">
+                                </div>
+                                {{video.nlikes}}
+                            {{else}}
+
+                                <div>
+                                    <input class="bt-fav m-2 action-like" item="{{video.id}}" type="image"
+                                           src="img/estrella_vacia.svg"
+                                           alt="{{i18n 'Like' }}">
+                                </div>
+                                {{video.nlikes}}
+                            {{/if}}
+                        {{else}}
+                            <a class="action-login"><img class="bt-fav m-2"
+                                                         src="img/estrella_vacia.svg"
+                                                         alt="{{i18n 'Like' }}"></a>{{video.nlikes}}
+                        {{/if}}
+                    </div>
+                    <div class="row m-0 p-0 text-right">
+                        <a><img id="tooltip-{{video.id}}"
+                                data-toggle="tooltip" data-placement="top" title="{{i18n 'Click to copy to clipboard' }}"
+                                item="{{video.id}}" class="bt-fav m-2 action-share"
+                                src="img/compartir.svg"
+                                alt="{{i18n 'Share' }}"></a>
+                    </div>
+                </div>
+
+
+                <div class="row pt-3 pb-3 list-group-item">
+
+                    <p class="m-0 p-0 text-center description">{{video.videodescription}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
