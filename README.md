@@ -142,9 +142,15 @@ Pasos para probar la aplicación:
 
 ## Construido con :hammer_and_wrench:
 
-* [mvcblog](https://github.com/lipido/mvcblog) - Base SPA REST
-* [PhpStorm](https://www.jetbrains.com/es-es/phpstorm/) - IDE
-* [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/) - Framework front-end
+####Servidor REST
+* [mvcblog](https://github.com/lipido/mvcblog) - Base API REST
+* [PhpStorm](https://www.jetbrains.com/es-es/phpstorm/) - IDE PHP
+
+####Cliente
+* [WebStorm](https://www.jetbrains.com/es-es/webstorm/) - IDE JavaScript
+* [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/) - Framework 
+* [fronty.js](https://github.com/lipido/fronty.js) - Component-based front-end JavaScript library for educational purposes
+* [handlebars](https://handlebarsjs.com/) - Motor de plantillas
 
 ## Autores :black_nib:
 
