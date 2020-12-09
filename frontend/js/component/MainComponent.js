@@ -82,6 +82,9 @@ class MainComponent extends Fronty.RouterComponent {
         });
 
         userbar.addEventListener('click', '#buttonlogout', () => {
+            this.videoModel.set(() => {
+                this.videoModel.uploadErrors = '';
+            });
             this.userModel.logout();
             this.userService.logout();
             this.goToPage("index");
@@ -98,6 +101,12 @@ class MainComponent extends Fronty.RouterComponent {
                 .then(() => {
                     this.userModel.setLoggeduser($('#formLoginInAlias').val());
                     $('#modallogin').modal('hide');
+                    this.userModel.set((model) => {
+                        model.loginError = '';
+                    });
+                    this.userModel.set((model) => {
+                        model.registerErrors = {};
+                    });
                     this.goToPage("home");
                 })
                 .catch((error) => {
