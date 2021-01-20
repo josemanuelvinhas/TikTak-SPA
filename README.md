@@ -145,6 +145,7 @@ Pasos para probar la aplicación:
 #### Servidor REST
 * [mvcblog](https://github.com/lipido/mvcblog) - Base API REST
 * [PhpStorm](https://www.jetbrains.com/es-es/phpstorm/) - IDE PHP
+* [PHPMailer](https://github.com/PHPMailer/PHPMailer) - Librería para mailing en PHP
 
 #### Cliente
 * [WebStorm](https://www.jetbrains.com/es-es/webstorm/) - IDE JavaScript
